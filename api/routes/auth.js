@@ -1,14 +1,10 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
-const { getDb } = require('../database');
+const { connectDB, User, HealthMetrics } = require('../database');
 
 const router = express.Router();
 
-/**
- * POST /api/auth/registrar
- * Cria um novo usuário com senha criptografada.
- */
 router.post('/registrar', async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -21,31 +17,35 @@ router.post('/registrar', async (req, res) => {
       return res.status(400).json({ erro: 'A senha deve ter no mínimo 8 caracteres.' });
     }
 
-    const db = getDb();
+    await connectDB();
 
-    // Verificar se o e-mail já existe
-    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
-    if (existing) {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
       return res.status(409).json({ erro: 'Este e-mail já está cadastrado.' });
     }
 
     const id = uuidv4();
-    const passwordHash = await bcrypt.hash(password, 10);
+    const password_hash = await bcrypt.hash(password, 10);
     const token = uuidv4();
-    const createdAt = new Date().toISOString();
 
-    db.prepare(
-      'INSERT INTO users (id, name, email, password_hash, token, created_at) VALUES (?, ?, ?, ?, ?, ?)'
-    ).run(id, name, email, passwordHash, token, createdAt);
+    const newUser = new User({
+      id,
+      name,
+      email,
+      password_hash,
+      token,
+    });
 
-    // Criar métricas padrão para o novo usuário
-    db.prepare(
-      'INSERT INTO health_metrics (user_id, hydration_goal, hydration_current, updated_at) VALUES (?, 2500, 0, ?)'
-    ).run(id, createdAt);
+    await newUser.save();
+
+    const initialMetrics = new HealthMetrics({
+      user_id: id,
+    });
+    await initialMetrics.save();
 
     res.status(201).json({
       token,
-      usuario: { id, name, email, createdAt },
+      usuario: { id, name, email, createdAt: newUser.created_at },
     });
   } catch (err) {
     console.error('Erro no registro:', err);
@@ -53,10 +53,6 @@ router.post('/registrar', async (req, res) => {
   }
 });
 
-/**
- * POST /api/auth/entrar
- * Autentica um usuário e retorna o token.
- */
 router.post('/entrar', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -65,8 +61,8 @@ router.post('/entrar', async (req, res) => {
       return res.status(400).json({ erro: 'E-mail e senha são obrigatórios.' });
     }
 
-    const db = getDb();
-    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+    await connectDB();
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(401).json({ erro: 'E-mail ou senha incorretos.' });
@@ -77,9 +73,9 @@ router.post('/entrar', async (req, res) => {
       return res.status(401).json({ erro: 'E-mail ou senha incorretos.' });
     }
 
-    // Gerar novo token a cada login
     const newToken = uuidv4();
-    db.prepare('UPDATE users SET token = ? WHERE id = ?').run(newToken, user.id);
+    user.token = newToken;
+    await user.save();
 
     res.json({
       token: newToken,

@@ -1,10 +1,6 @@
-const { getDb } = require('../database');
+const { connectDB, User } = require('../database');
 
-/**
- * Middleware de autenticação.
- * Verifica o token no header Authorization e injeta req.user.
- */
-function authMiddleware(req, res, next) {
+async function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -14,8 +10,8 @@ function authMiddleware(req, res, next) {
   const token = authHeader.split(' ')[1];
 
   try {
-    const db = getDb();
-    const user = db.prepare('SELECT id, name, email, age, weight, height, gender, created_at FROM users WHERE token = ?').get(token);
+    await connectDB();
+    const user = await User.findOne({ token });
 
     if (!user) {
       return res.status(401).json({ erro: 'Token inválido ou expirado.' });
