@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+/* ============================
+   Animações Globais
+   ============================ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes progress-fill {
+  from { width: 0%; }
+}
+
+@keyframes toast-enter {
+  from { opacity: 0; transform: translateX(100%) scale(0.9); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes toast-exit {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to { opacity: 0; transform: translateX(100%) scale(0.9); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes check-bounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* ============================
+   Base Styles
+   ============================ */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-surface text-on-surface min-h-screen flex flex-col font-body-md;
+  }
+
+  /* Focus visible para acessibilidade */
+  :focus-visible {
+    outline: 2px solid #2E7D32;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Scrollbar Customizada */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #bfcaba;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #707a6c;
+  }
+
+  /* Seleção de texto */
+  ::selection {
+    background: rgba(46, 125, 50, 0.2);
+    color: #071e27;
+  }
+}
+
+/* ============================
+   Classes de Animação Utilitárias
+   ============================ */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out both;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out both;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out both;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.3s ease-out both;
+}
+
+.animate-slide-out-right {
+  animation: slideOutRight 0.3s ease-in both;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out both;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-progress-fill {
+  animation: progress-fill 0.8s ease-out both;
+}
+
+.animate-toast-enter {
+  animation: toast-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-toast-exit {
+  animation: toast-exit 0.3s ease-in both;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.5) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.animate-check-bounce {
+  animation: check-bounce 0.3s ease-out;
+}
+
+/* Stagger animations */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+
+/* ============================
+   Material Symbols
+   ============================ */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ============================
+   Acessibilidade: Alto Contraste
+   ============================ */
+html.high-contrast {
+  --contrast-boost: 1;
+}
+
+html.high-contrast body {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+html.high-contrast .bg-surface-container-lowest,
+html.high-contrast .bg-surface-container-low,
+html.high-contrast .bg-surface-container,
+html.high-contrast .bg-surface-container-high,
+html.high-contrast .bg-surface-container-highest {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+html.high-contrast .text-on-surface-variant,
+html.high-contrast .text-on-surface {
+  color: #000000 !important;
+}
+
+html.high-contrast .border-outline-variant {
+  border-color: #000000 !important;
+}
+
+html.high-contrast .bg-primary,
+html.high-contrast .bg-primary-container {
+  background-color: #000000 !important;
+}
+
+html.high-contrast .text-primary {
+  color: #000000 !important;
+  text-decoration: underline;
+}
+
+/* ============================
+   Acessibilidade: Fonte Grande
+   ============================ */
+html.large-font {
+  font-size: 120%;
+}
+
+html.large-font h1, html.large-font h2, html.large-font h3 {
+  line-height: 1.4;
+}
+
+/* ============================
+   Acessibilidade: Modo Leitura
+   ============================ */
+html.reading-mode body {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+html.reading-mode img,
+html.reading-mode video {
+  display: none;
+}
+
+html.reading-mode nav,
+html.reading-mode footer {
+  opacity: 0.5;
+}
+
+/* ============================
+   Acessibilidade: Reduzir Animações
+   ============================ */
+html.reduce-animations *,
+html.reduce-animations *::before,
+html.reduce-animations *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Respeitar preferência do sistema */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================
+   Skeleton Loading
+   ============================ */
+.skeleton {
+  background: linear-gradient(90deg, #e6f6ff 25%, #d5ecf8 50%, #e6f6ff 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* ============================
+   Linha de truncamento
+   ============================ */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
