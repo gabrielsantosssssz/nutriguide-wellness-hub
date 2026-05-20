@@ -141,8 +141,11 @@ MIT
 ## 👤 Autor
 
 Gabriel Santos
+
 gustavo augusto de souza 
+
 everton correia 
+
 gabriel pedroso 
 
  - [@gabrielsantosssssz](https://github.com/gabrielsantosssssz)
