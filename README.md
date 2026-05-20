@@ -142,11 +142,11 @@ MIT
 
 Gabriel Santos
 
-gustavo augusto de souza 
+Gustavo augusto de souza 
 
-everton correia 
+Everton correia 
 
-gabriel pedroso 
+Gabriel pedroso 
 
  - [@gabrielsantosssssz](https://github.com/gabrielsantosssssz)
 
