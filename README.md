@@ -1,73 +1,152 @@
-# React + TypeScript + Vite
+# 🥗 NutriGuide - Wellness Hub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Plataforma web para gerenciamento de saúde, nutrição e hábitos saudáveis.
 
-Currently, two official plugins are available:
+🌐 **[Live Demo](https://nutriguide-wellness-hub.vercel.app)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🎯 Funcionalidades
 
-## React Compiler
+- ✅ Autenticação segura com JWT
+- 📊 Dashboard com métricas de saúde
+- 🧮 Calculadoras (IMC, TMB, calorias)
+- 📖 Blog educativo
+- 🏆 Rastreamento de hábitos
+- ♿ Painel de acessibilidade
+- 📱 Design responsivo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+**Frontend:** React 19 | TypeScript | Vite | Tailwind CSS  
+**Backend:** Express | MongoDB | Mongoose | bcryptjs  
+**Deploy:** Vercel
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ⚡ Quick Start
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Instalação
+```bash
+git clone https://github.com/gabrielsantosssssz/nutriguide-wellness-hub.git
+cd nutriguide-wellness-hub
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Variáveis de Ambiente
+```bash
+cat > .env << EOF
+VITE_API_URL=http://localhost:3000
+MONGODB_URI=mongodb://localhost:27017/nutriguide
+JWT_SECRET=sua_chave_secreta
+EOF
 ```
+
+### Rodando
+```bash
+# Terminal 1 - Frontend (porta 5173)
+npm run dev
+
+# Terminal 2 - Backend (porta 3000)
+cd api && npm install && node index.js
+```
+
+## 📖 Scripts
+
+```bash
+npm run build    # Build otimizado
+npm run lint     # Verificar código
+npm run preview  # Preview da build
+```
+
+## 🗂️ Estrutura
+
+```
+src/
+├── pages/          # Login, Dashboard, Calculators, Blog, Habits, Profile
+├── components/     # Header, Footer, AccessibilityPanel, ProtectedRoute
+├── contexts/       # Auth, HealthData, Accessibility
+├── services/       # API calls
+└── types/         # TypeScript definitions
+
+api/
+├── routes/        # auth, users, metrics, habits, calculator
+├── middleware/    # auth validation, error handling
+└── database.js    # MongoDB config
+```
+
+## 🔐 Autenticação
+
+- Registro: POST `/api/auth/registro`
+- Login: POST `/api/auth/login`
+- Senhas: Criptografadas com bcryptjs (10 rounds)
+- Tokens: JWT armazenados em localStorage
+
+## 🌐 API Endpoints
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| POST | `/api/auth/login` | Fazer login |
+| POST | `/api/auth/registro` | Criar conta |
+| GET | `/api/usuarios/:id` | Dados do usuário |
+| GET | `/api/metricas/:usuarioId` | Métricas de saúde |
+| POST | `/api/metricas` | Registrar métrica |
+| GET | `/api/habitos/:usuarioId` | Listar hábitos |
+| POST | `/api/habitos` | Criar hábito |
+| POST | `/api/calculadora/imc` | Calcular IMC |
+| POST | `/api/calculadora/tmb` | Calcular TMB |
+
+## 🚀 Deploy
+
+Já configurado no Vercel. Para fazer deploy manual:
+
+```bash
+npm i -g vercel
+vercel
+```
+
+**Variáveis obrigatórias em produção:**
+- `MONGODB_URI`
+- `JWT_SECRET`
+- `BCRYPT_ROUNDS`
+
+## 🔒 Segurança
+
+- ✅ CORS configurado
+- ✅ Senhas hasheadas (bcryptjs)
+- ✅ JWT para autenticação
+- ✅ Rotas protegidas
+- ✅ Validação de entrada
+
+## ♿ Acessibilidade
+
+- Navegação por teclado
+- Suporte a screen readers
+- Painel de ajustes de contraste e fonte
+- ARIA labels
+- Cores com contraste adequado
+
+## 📝 Tipos TypeScript
+
+Projeto totalmente tipado com TypeScript 6.0.2
+
+## 🤝 Contribuindo
+
+1. Fork o repositório
+2. Crie uma branch (`git checkout -b feature/MinhaFeature`)
+3. Commit (`git commit -m 'Add: nova feature'`)
+4. Push (`git push origin feature/MinhaFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+MIT
+
+## 👤 Autor
+
+Gabriel Santos
+gustavo augusto de souza 
+everton correia 
+gabriel pedroso 
+
+ - [@gabrielsantosssssz](https://github.com/gabrielsantosssssz)
+
+---
+
+⭐ Se gostou, deixe uma star!
